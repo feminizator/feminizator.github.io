@@ -2,15 +2,6 @@
 // [ ] TODO: разбор переданного адреса
 // [ ] TODO: vk.com
 // [ ] TODO: валидация
-// [ ] TODO: jQuery (?)
-
-//Подготовка запросов к cors.how.sh
-$.ajaxPrefilter(function (options) {
-  if (options.crossDomain && jQuery.support.cors) {
-    var http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
-    options.url = http + '//cors.now.sh/' + options.url;
-  }
-});
 
 var FEM = {};
 
@@ -135,19 +126,15 @@ function css_gender_gap() { return html_wrap(' \u26A7 ', "queer"); }
 
 //Конструирование феминитива с gender_gap
 function construct_feminitive(stem, ending, gap) {
-	if (gap) {
-		return stem + css_gender_gap() + css_end(ending);
-	} else {
-		return stem + "_" + ending;
-	}
+	return gap ? stem + css_gender_gap() + css_end(ending) : stem + "_" + ending;
 }
 
 //Создание феминитива
 function make_feminitives(word) {
-	var stem           = "";           //Основа слова
+	var stem           = "";             //Основа слова
 	var current_ending = word.slice(-2); //Текущее окончание
-	var feminitives    = new Array();  //Массив феминитивов
-	var femicards      = new Array();  //Массив феминитивов для карточки
+	var feminitives    = new Array();    //Массив феминитивов
+	var femicards      = new Array();    //Массив феминитивов для карточки
 
 	for (var fem_ending in FEM.endings) {
 		FEM.endings[fem_ending].forEach(function(end) {
@@ -162,22 +149,18 @@ function make_feminitives(word) {
 		});
 	};
 	//При отсутствии феминитивов считать корректным исходное слово
-	if (feminitives.length === 0) {
-		femicards.push(word);
-	};
-
-	var femicard = random_word(femicards);
-
-	return [femicard, feminitives];
+	return [random_word(femicards) || word, feminitives];
 }
 
 //Запрос значения слова в викисловаре
 function get_wiktionary(term, ui) {
-	var wiki_url = "https://ru.wiktionary.org/w/index.php?title=" + term + "&action=raw";
+	var cors_url = "https://cors.now.sh/";
+	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?title=" + term + "&action=raw";
 
-	return $.get(wiki_url, function (data) {
-		var wiki       = data.split("\\n");
-		var definition = "";
+	var definition = "";
+
+	var parseWikiPage = function(page) {
+		var wiki = page.split("\\n");
 
 		for(var line = 0; line < wiki.length; line++){
 			if (wiki[line].match(/^.*==== Значение ====.*$/)) {
@@ -195,54 +178,63 @@ function get_wiktionary(term, ui) {
 			}
 		}
 
-		var w = "";
-		var ww = new Array();
+		//Разделение дефиниции на массив слов и знаков препинания
+		var current_word = "";
+		var tokens = new Array();
 		for (var l = 0; l <= definition.length; l++) {
 			if (/[^\wа-яА-Я]/.test(definition[l])) {
-				ww.push(w);
-				ww.push(definition[l]);
-				w = "";
+				tokens.push(current_word);
+				tokens.push(definition[l]);
+				current_word = "";
 				continue;
 			} else {
-				w += definition[l];
+				current_word += definition[l];
 			}
 		}
 
-		var dd = new Array();
-		ww.forEach(function(word) {
-			if (word.length > 2) {
-				dd.push(make_feminitives(word)[0]);
-			} else {
-				dd.push(word);
-			}
+		//Феминизация слов
+		var true_definition = new Array();
+		tokens.forEach(function(word) {
+			true_definition.push((word.length > 3) ? make_feminitives(word)[0] : word);
 		});
 
-		//DEBUG
-		console.log(ww.join(""));
-		console.log(dd);
-
 		//Замена местоимений, предлогов и проч.
-		var article = FEM.words.convert(dd.join(""));
+		var article = FEM.words.convert(true_definition.join(""));
+
+		//DEBUG
+		console.log(tokens.join(""));
+		console.log(true_definition);
 		console.log(article);
 
-		$("#" + ui).html(article);
-	});
+		document.getElementById(ui).innerHTML = article;
+	}
+
+	xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+			parseWikiPage(xmlhttp.responseText);
+		}
+	}
+
+	xmlhttp.open("GET", wiki_url, false);
+	xmlhttp.send();    
 }
 
 //Создание и вывод феминитива
 function tr(word, descr) {
+	document.getElementById(descr).innerHTML = "";
+
 	//Исходное слово
-	var wd = $("#" + word).val().trim().split(" ")[0];
+	var wd = document.getElementById(word).value.trim().split(" ")[0];
 
 	//Вывод дефиниции
 	get_wiktionary(wd, descr + "-full");
 
-	$("#" + descr).empty();
-
 	var feminitives = make_feminitives(wd);
 
 	//Вывод информации
-	$("#" + descr).html(feminitives[1].join(" | "));
-	$("#" + descr + "-content").html(feminitives[0]);
+	document.getElementById(descr).innerHTML = feminitives[1].join(" | ");
+	document.getElementById(descr + "-content").innerHTML = feminitives[0];
 }
 
