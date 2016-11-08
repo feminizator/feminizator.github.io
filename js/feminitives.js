@@ -281,23 +281,28 @@ function get_wiktionary(term) {
 
 //Создание и вывод феминитива
 function tr(word) {
-	HTML.dict().innerHTML = "";
-	HTML.content().innerHTML = "";
-
 	//Исходное слово
 	var wd = word || HTML.input().value.trim().split(" ")[0];
 
-	//Вывод дефиниции
-	get_wiktionary(wd);
+	if (wd) {
+		HTML.dict().innerHTML = "";
+		HTML.content().innerHTML = "";
 
-	var feminitives = make_feminitives(wd);
+		//Вывод дефиниции
+		get_wiktionary(wd);
 
-	//Вывод информации
-	HTML.dict().innerHTML    = feminitives[1].join(" | ");
-	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
+		var feminitives = make_feminitives(wd);
 
-	//
-	HTML.input().value = wd;
+		//Вывод информации
+		HTML.dict().innerHTML    = feminitives[1].join(" | ")
+					|| "Это слово и так прекрасно. Оставим его как есть.";
+		HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
+
+		//
+		HTML.input().value = wd;
+	} else {
+		show_help();
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -317,19 +322,22 @@ function init(container) {
 
 	//Разбор адреса
 	querySt = function(option) {
-	    gy = window.location.search.substring(1).split("&");
+		gy = window.location.search.substring(1).split("&");
 
-	    for (i=0; i < gy.length; i++) {
-		ft = gy[i].split("=");
-		if (ft[0] == option) {
-		    return ft[1];
+		for (i=0; i < gy.length; i++) {
+			ft = gy[i].split("=");
+			if (ft[0] == option) {
+				return ft[1];
+			}
 		}
-	    }
 	}
 
-	if (window.location.search.substring(1)) {
-		HTML.input().value = decodeURIComponent(querySt("word").replace(/\+/g," "));
+	var query = decodeURIComponent(querySt("word"));
+	if (query !== 'undefined') {
+		HTML.input().value = query.replace(/\+/g," ");
 		tr();
+	} else {
+		show_help();
 	}
 }
 
