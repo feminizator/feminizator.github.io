@@ -2,6 +2,9 @@
 // [ ] TODO: разбор переданного адреса
 // [ ] TODO: vk.com
 // [ ] TODO: валидация
+// [ ] TODO: фокус
+// [ ] TODO: клавиатура
+// [ ] TODO: ссылки на примеры
 
 var FEM = {};
 
@@ -119,7 +122,7 @@ function html_wrap(str, cl) {
 }
 
 //Цветовое выделение текста
-function css_end(ending)  { return html_wrap(ending, "text-warning");  }
+function css_end(ending)  { return html_wrap(ending, "ending");  }
 
 //Символ gender gap
 function css_gender_gap() { return html_wrap(' \u26A7 ', "queer"); }
@@ -153,7 +156,7 @@ function make_feminitives(word) {
 }
 
 //Запрос значения слова в викисловаре
-function get_wiktionary(term, ui) {
+function get_wiktionary(term, container) {
 	var cors_url = "https://cors.now.sh/";
 	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?title=" + term + "&action=raw";
 
@@ -206,7 +209,7 @@ function get_wiktionary(term, ui) {
 		console.log(true_definition);
 		console.log(article);
 
-		document.getElementById(ui).innerHTML = article;
+		document.getElementById(container).innerHTML = article;
 	}
 
 	xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -218,23 +221,43 @@ function get_wiktionary(term, ui) {
 	}
 
 	xmlhttp.open("GET", wiki_url, false);
-	xmlhttp.send();    
+	xmlhttp.send();
 }
 
 //Создание и вывод феминитива
-function tr(word, descr) {
-	document.getElementById(descr).innerHTML = "";
+function tr(container) {
+	document.getElementById(container + "-dict").innerHTML = "";
 
 	//Исходное слово
-	var wd = document.getElementById(word).value.trim().split(" ")[0];
+	var wd = document.getElementById(container + "-word").value.trim().split(" ")[0];
 
 	//Вывод дефиниции
-	get_wiktionary(wd, descr + "-full");
+	get_wiktionary(wd, container + "-full");
 
 	var feminitives = make_feminitives(wd);
 
 	//Вывод информации
-	document.getElementById(descr).innerHTML = feminitives[1].join(" | ");
-	document.getElementById(descr + "-content").innerHTML = feminitives[0];
+	document.getElementById(container + "-dict").innerHTML = feminitives[1].join(" | ");
+	document.getElementById(container + "-content").innerHTML = feminitives[0];
+}
+
+//Инициализация с разбором адресной строки
+function init(container) {
+	querySt = function(ji) {
+	    hu = window.location.search.substring(1);
+	    gy = hu.split("&");
+
+	    for (i=0;i<gy.length;i++) {
+		ft = gy[i].split("=");
+		if (ft[0] == ji) {
+		    return ft[1];
+		}
+	    }
+	}
+
+	if (window.location.search.substring(1)) {
+		document.getElementById(container + "-word").value = decodeURIComponent(querySt("word").replace(/\+/g," "));
+		tr(container);
+	}
 }
 
