@@ -230,7 +230,7 @@ function get_wiktionary(term, container) {
 		}
 	}
 
-	xmlhttp.open("GET", wiki_url, false);
+	xmlhttp.open("GET", wiki_url, true);
 	xmlhttp.send();
 }
 
