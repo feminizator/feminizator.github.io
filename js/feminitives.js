@@ -1,7 +1,5 @@
 // [ ] TODO: vk.com
 // [ ] TODO: валидация
-// [ ] TODO: фокус
-// [ ] TODO: клавиатура
 // [ ] TODO: ссылки на примеры
 
 var FEM = {};
@@ -255,13 +253,21 @@ function tr(container) {
 
 //Инициализация с разбором адресной строки
 function init(container) {
-	querySt = function(ji) {
-	    hu = window.location.search.substring(1);
-	    gy = hu.split("&");
+	//Конвертирование по нажатию <Enter>
+	document.getElementById(container).addEventListener("keyup", function(event) {
+		event.preventDefault();
+		if (event.keyCode == 13) {
+			tr(container);
+		}
+	});
 
-	    for (i=0;i<gy.length;i++) {
+	//Разбор адреса
+	querySt = function(option) {
+	    gy = window.location.search.substring(1).split("&");
+
+	    for (i=0; i < gy.length; i++) {
 		ft = gy[i].split("=");
-		if (ft[0] == ji) {
+		if (ft[0] == option) {
 		    return ft[1];
 		}
 	    }
