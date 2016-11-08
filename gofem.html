@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/feminitives.css"   rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 text-center">
+        <br />
+        <h4>Больше феминитивов богинюшке</h4>
+        <em><small>Каждый раз, когда вы создаёте феминитив, в мире умирает одна ♂-мразь.</small></em>
+        <br />
+
+        <div class="input-group" style="text-align: center;">
+          <input id="word" type="text" class="form-control" placeholder="Нормальное слово" value="металлург">
+          <span class="input-group-btn">
+            <button class="btn btn-success" type="button" onclick="tr('word', 'definition')">
+	    	Феминитивь!
+	    </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6 text-center">
+        <br />
+        <div id="definition"></div><br />
+        <div id="definition-full"></div><br />
+        <div id="definition-card">
+          <h1><span> ф — феминитивы </span></h1>
+          <div id="definition-content"></div>
+        </div>
+
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/feminitives.js"></script>
+  </body>
+</html>
+
