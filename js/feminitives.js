@@ -1,6 +1,18 @@
 // [ ] TODO: vk.com
 // [ ] TODO: валидация
+// [ ] TODO: справка
 // [ ] TODO: ссылки на примеры
+
+//Иерархия элементов на странице
+var HTML = {
+	container: "",
+	_select:    function(element) { return document.getElementById(this.container + "-" + element); },
+	input:      function() { return this._select("word"); },
+	dict:       function() { return this._select("dict"); },
+	content:    function() { return this._select("content"); },
+	full:       function() { return this._select("full"); },
+	image:      function() { return this._select("image"); }
+}
 
 var FEM = {};
 
@@ -129,14 +141,12 @@ function construct_feminitive(stem, ending, gap) {
 }
 
 //Сохранение изображения с феминитивом
-function download_image(container) {
-	html2canvas(document.getElementById(container), {
+function download_image() {
+	html2canvas(HTML.image(), {
 		onrendered: function (canvas) {
 			var a = document.createElement('a');
 			a.href = canvas.toDataURL();
-			a.download = document.getElementById(container
-						.replace(/-.*$/,"-content"))
-						.innerHTML + '.png';
+			a.download = HTML.content().innerHTML + '.png';
 			a.click();
 		}
 	});
@@ -166,7 +176,7 @@ function make_feminitives(word) {
 }
 
 //Запрос значения слова в викисловаре
-function get_wiktionary(term, container) {
+function get_wiktionary(term) {
 	var cors_url = "https://cors.now.sh/";
 	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?title=" + term + "&action=raw";
 
@@ -219,7 +229,7 @@ function get_wiktionary(term, container) {
 		console.log(true_definition);
 		console.log(article);
 
-		document.getElementById(container).innerHTML = article;
+		HTML.full().innerHTML = article;
 	}
 
 	xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -235,26 +245,29 @@ function get_wiktionary(term, container) {
 }
 
 //Создание и вывод феминитива
-function tr(container) {
-	document.getElementById(container + "-dict").innerHTML = "";
+function tr() {
+	HTML.dict().innerHTML = "";
 
 	//Исходное слово
-	var wd = document.getElementById(container + "-word").value.trim().split(" ")[0];
+	var wd = HTML.input().value.trim().split(" ")[0];
 
 	//Вывод дефиниции
-	get_wiktionary(wd, container + "-full");
+	get_wiktionary(wd);
 
 	var feminitives = make_feminitives(wd);
 
 	//Вывод информации
-	document.getElementById(container + "-dict").innerHTML    = feminitives[1].join(" | ");
-	document.getElementById(container + "-content").innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
+	HTML.dict().innerHTML    = feminitives[1].join(" | ");
+	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
 }
 
 //Инициализация с разбором адресной строки
 function init(container) {
+	//Задание базового id для всех элементов
+	HTML.container = container;
+
 	//Конвертирование по нажатию <Enter>
-	document.getElementById(container).addEventListener("keyup", function(event) {
+	HTML.input().addEventListener("keyup", function(event) {
 		event.preventDefault();
 		if (event.keyCode == 13) {
 			tr(container);
@@ -274,7 +287,7 @@ function init(container) {
 	}
 
 	if (window.location.search.substring(1)) {
-		document.getElementById(container + "-word").value = decodeURIComponent(querySt("word").replace(/\+/g," "));
+		HTML.input().value = decodeURIComponent(querySt("word").replace(/\+/g," "));
 		tr(container);
 	}
 }
