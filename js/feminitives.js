@@ -1,5 +1,40 @@
+
+// Copyright (C) 2016, Maxim Lihachev, <envrm@yandex.ru>
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 // [ ] TODO: валидация
 // [ ] TODO: адаптивная вёрстка
+
+//------------------------------------------------------------------------------
+
+//Вывод справки с примерами использования
+function show_help() {
+	HTML.content().innerHTML = "<div id='definition-help'>"
+	+ "<p>ФЕМИНИТИВЫ – это слова женского рода, "
+	+ "альтернативные или парные аналогичным понятиям мужского рода, "
+	+ "относящимся ко всем людям независимо от их пола.</p>"
+	+ "<p>При помощи <a href='TODO'>этой небольшой программы</a>,"
+	+ "реализующей феминистическую логику, "
+	+ "вы сами можете создать феминитивы к любому слову.</p>"
+	+ "<p>Попробуйте: "
+	+ "<a href=javascript:tr('автор');>автор</a>, "
+	+ "<a href=javascript:tr('врач');>врач</a>.</p>"
+	+ "</div>";
+}
+
+//------------------------------------------------------------------------------
 
 //Иерархия элементов на странице
 var HTML = {
@@ -106,6 +141,8 @@ FEM.words.convert = function(string) {
 	}
 	return string;
 }
+
+//------------------------------------------------------------------------------
 
 //Первый элемент списка - окончание (в виде регулярного выражения)
 function ending(tuple) {
@@ -263,6 +300,8 @@ function tr(word) {
 	HTML.input().value = wd;
 }
 
+//------------------------------------------------------------------------------
+
 //Инициализация с разбором адресной строки
 function init(container) {
 	//Задание базового id для всех элементов
@@ -292,19 +331,5 @@ function init(container) {
 		HTML.input().value = decodeURIComponent(querySt("word").replace(/\+/g," "));
 		tr();
 	}
-}
-
-function show_help() {
-	HTML.content().innerHTML = "<div id='definition-help'>"
-	+ "<p>ФЕМИНИТИВЫ – это слова женского рода, "
-	+ "альтернативные или парные аналогичным понятиям мужского рода, "
-	+ "относящимся ко всем людям независимо от их пола.</p>"
-	+ "<p>При помощи <a href='TODO'>этой небольшой программы</a>,"
-	+ "реализующей феминистическую логику, "
-	+ "вы сами можете создать феминитивы к любому слову.</p>"
-	+ "<p>Попробуйте: "
-	+ "<a href=javascript:tr('автор');>автор</a>, "
-	+ "<a href=javascript:tr('врач');>врач</a>.</p>"
-	+ "</div>";
 }
 
