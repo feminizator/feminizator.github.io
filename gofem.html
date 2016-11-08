@@ -7,31 +7,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"> -->
     <link href="css/feminitives.css"   rel="stylesheet">
   </head>
 
   <body onload="init('definition')">
     <div style="text-align: center;">
-    <div id="definition">
+      <div id="definition">
         <h1>Феминизатор v1.0</h1>
 
         <input id="definition-word" type="text" class="form-control" placeholder="Слово">
         <button type="button" onclick="tr('definition')">Феминитивь!</button>
 
-        <br />
-        <div id="definition-dict"></div><br />
-        <div id="definition-full"></div><br />
-        <div id="definition-card">
-          <h1><span> ф — феминитивы </span></h1>
-          <div id="definition-content"></div>
+        <div id="definition-dict"></div>
+        <div id="definition-full"></div>
+        <div id="definition-image">
+          <div id="definition-card">
+            <h1><span> ф — феминитивы </span></h1>
+            <div id="definition-content"></div>
+          </div>
         </div>
-    </div>
+        <button type="button" onclick="download_image('definition-image')">IMG</button>
+      </div>
     </div>
 
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-    <!-- <script src="js/bootstrap.min.js"></script> -->
     <script src="js/feminitives.js"></script>
+    <script src="js/html2canvas.js"></script>
   </body>
 </html>
 

@@ -1,5 +1,3 @@
-// [ ] TODO: сохранение изображения
-// [ ] TODO: разбор переданного адреса
 // [ ] TODO: vk.com
 // [ ] TODO: валидация
 // [ ] TODO: фокус
@@ -132,6 +130,20 @@ function construct_feminitive(stem, ending, gap) {
 	return gap ? stem + css_gender_gap() + css_end(ending) : stem + "_" + ending;
 }
 
+//Сохранение изображения с феминитивом
+function download_image(container) {
+	html2canvas(document.getElementById(container), {
+		onrendered: function (canvas) {
+			var a = document.createElement('a');
+			a.href = canvas.toDataURL();
+			a.download = document.getElementById(container
+						.replace(/-.*$/,"-content"))
+						.innerHTML + '.png';
+			a.click();
+		}
+	});
+};
+
 //Создание феминитива
 function make_feminitives(word) {
 	var stem           = "";             //Основа слова
@@ -237,8 +249,8 @@ function tr(container) {
 	var feminitives = make_feminitives(wd);
 
 	//Вывод информации
-	document.getElementById(container + "-dict").innerHTML = feminitives[1].join(" | ");
-	document.getElementById(container + "-content").innerHTML = feminitives[0];
+	document.getElementById(container + "-dict").innerHTML    = feminitives[1].join(" | ");
+	document.getElementById(container + "-content").innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
 }
 
 //Инициализация с разбором адресной строки
