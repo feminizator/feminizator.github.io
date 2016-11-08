@@ -245,11 +245,12 @@ function get_wiktionary(term) {
 }
 
 //Создание и вывод феминитива
-function tr() {
+function tr(word) {
 	HTML.dict().innerHTML = "";
+	HTML.content().innerHTML = "";
 
 	//Исходное слово
-	var wd = HTML.input().value.trim().split(" ")[0];
+	var wd = word || HTML.input().value.trim().split(" ")[0];
 
 	//Вывод дефиниции
 	get_wiktionary(wd);
@@ -259,6 +260,9 @@ function tr() {
 	//Вывод информации
 	HTML.dict().innerHTML    = feminitives[1].join(" | ");
 	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
+
+	//
+	HTML.input().value = wd;
 }
 
 //Инициализация с разбором адресной строки
@@ -270,7 +274,7 @@ function init(container) {
 	HTML.input().addEventListener("keyup", function(event) {
 		event.preventDefault();
 		if (event.keyCode == 13) {
-			tr(container);
+			tr();
 		}
 	});
 
@@ -288,7 +292,20 @@ function init(container) {
 
 	if (window.location.search.substring(1)) {
 		HTML.input().value = decodeURIComponent(querySt("word").replace(/\+/g," "));
-		tr(container);
+		tr();
 	}
+}
+
+function show_help() {
+	HTML.content().innerHTML = "<div id='definition-help'>"
+	+ "<p>ФЕМИНИТИВЫ – это слова женского рода, "
+	+ "альтернативные или парные аналогичным понятиям мужского рода, "
+	+ "относящимся ко всем людям независимо от их пола.</p>"
+	+ "<p>При помощи этой небольшой программы, реализующей феминистическую логику, "
+	+ "вы сами можете создать феминитивы к любому слову.</p>"
+	+ "<p>Попробуйте: "
+	+ "<a href=javascript:tr('автор');>автор</a>, "
+	+ "<a href=javascript:tr('врач');>врач</a>.</p>"
+	+ "</div>";
 }
 
