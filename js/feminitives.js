@@ -40,7 +40,7 @@ function show_help() {
 var HTML = {
 	container: "",
 	_select:    function(element) { return document.getElementById(this.container + "-" + element); },
-	input:      function() { return this._select("word").toLowerCase(); },
+	input:      function() { return this._select("word"); },
 	dict:       function() { return this._select("dict"); },
 	content:    function() { return this._select("content"); },
 	full:       function() { return this._select("full"); },
@@ -129,8 +129,23 @@ FEM.endings = {
 };
 
 //Слова со специфичными определениями
-FEM.exeptions = {
+FEM.exceptions = {
 	'феминист' : [['профеминист', 'союзник'], "Мифическое создание, якобы поддерживающее феминизм."]
+}
+
+//Проверка на исключение
+FEM.exceptions.contains = function(word) {
+	return Object.keys(this).indexOf(word) === -1 ? false : true;
+}
+
+//Список значений
+FEM.exceptions.feminitives  = function(word) {
+	return [random_word(this[word][0]), this[word][0]];
+}
+
+//Дефиниция слова-исключения
+FEM.exceptions.definition  = function(word) {
+	return this[word][1];
 }
 
 //Слова для замены
@@ -294,27 +309,27 @@ function get_wiktionary(term) {
 //Создание и вывод феминитива
 function tr(word) {
 	//Исходное слово
-	var wd = word || HTML.input().value.trim().split(" ")[0];
+	var wd = word || HTML.input().value.trim().toLowerCase().split(" ")[0];
+	var feminitives = "";
 
-	if (wd) {
-		HTML.dict().innerHTML = "";
-		HTML.content().innerHTML = "";
+	HTML.dict().innerHTML = "";
+	HTML.content().innerHTML = "";
 
-		//Вывод дефиниции
-		get_wiktionary(wd);
-
-		var feminitives = make_feminitives(wd);
-
-		//Вывод информации
-		HTML.dict().innerHTML    = feminitives[1].join(" | ")
-					|| "Это слово и так прекрасно. Оставим его как есть.";
-		HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
-
-		//
-		HTML.input().value = wd;
-	} else {
+	//Вывод информации
+	if (!wd) {
 		show_help();
+	} else if (FEM.exceptions.contains(wd)) {
+		HTML.full().innerHTML = FEM.exceptions.definition(wd);
+		feminitives = FEM.exceptions.feminitives(wd);
+	} else {
+		get_wiktionary(wd);
+		feminitives = make_feminitives(wd);
 	}
+	//Вывод информации
+	HTML.input().value = wd;
+	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
+	HTML.dict().innerHTML    = feminitives[1].join(" | ")
+				|| "Это слово и так прекрасно. Оставим его как есть.";
 }
 
 //------------------------------------------------------------------------------
