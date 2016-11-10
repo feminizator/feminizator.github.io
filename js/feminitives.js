@@ -16,8 +16,11 @@
 
 // [ ] TODO: валидация
 // [ ] TODO: адаптивная вёрстка
+// [ ] TODO: favico
 
 //------------------------------------------------------------------------------
+
+'use strict';
 
 //Вывод справки с примерами использования
 function show_help() {
@@ -45,11 +48,36 @@ var HTML = {
 	content:    function() { return this._select("content"); },
 	full:       function() { return this._select("full"); },
 	image:      function() { return this._select("image"); }
-}
+};
 
-var FEM = {};
+//Инициализация документа
+HTML.init = function(root) {
+	//Задание базового id для всех элементов
+	this.container = root;
+
+	//Конвертирование по нажатию <Enter>
+	this.input().addEventListener("keyup", event => {
+		event.preventDefault();
+		event.keyCode == 13 && tr();
+	});
+};
+
+//Разбор параметров
+var URL = {opt: {}};
+
+URL.parse = function() {
+	var gy = window.location.search.substring(1).split("&");
+	gy.forEach(arg => {
+		let ft = arg.split("=");
+		this.opt[ft[0]] = this.opt[ft[0]] || decodeURIComponent(ft[1]);
+	});
+};
+
+//------------------------------------------------------------------------------
 
 //Правила создания феминитивов
+var FEM = {};
+
 FEM.endings = {
 	'ка'   : [
 			['[аео]р', 0],
@@ -130,23 +158,25 @@ FEM.endings = {
 
 //Слова со специфичными определениями
 FEM.exceptions = {
-	'феминист' : [['профеминист', 'союзник'], "Мифическое создание, якобы поддерживающее феминизм."]
-}
+	'феминист' : [ ['профеминист', 'союзник'],
+			"Мифическое создание, якобы поддерживающее феминизм. В реальности не встречается."
+	]
+};
 
 //Проверка на исключение
 FEM.exceptions.contains = function(word) {
-	return Object.keys(this).indexOf(word) === -1 ? false : true;
-}
+	return Object.keys(this).includes(word);
+};
 
 //Список значений
 FEM.exceptions.feminitives  = function(word) {
 	return [random_word(this[word][0]), this[word][0]];
-}
+};
 
 //Дефиниция слова-исключения
 FEM.exceptions.definition  = function(word) {
 	return this[word][1];
-}
+};
 
 //Слова для замены
 FEM.words = {
@@ -166,141 +196,120 @@ FEM.words.convert = function(string) {
 				.replace(/(.)/, s => s.toUpperCase());
 	}
 	return string;
-}
+};
 
 //------------------------------------------------------------------------------
 
 //Первый элемент списка - окончание (в виде регулярного выражения)
-function ending(tuple) {
-	return new RegExp("^.*" + tuple[0] + "$", "i");
-}
+let ending = tuple => new RegExp("^.*" + tuple[0] + "$", "i");
 
 //Второй элемент списка - смещение
-function offset(tuple) {
-	return tuple[1];
-}
+let offset = tuple => tuple[1];
 
 //Случайный элемент списка
-function random_word(wordlist) {
-	return wordlist[Math.floor(Math.random() * wordlist.length)];
-}
+let random_word = wordlist => wordlist[Math.floor(Math.random() * wordlist.length)];
 
 //Оборачивание в <span> с указанным классом
-function html_wrap(str, cl) {
-	return "<span class=\"" + cl + "\">" + str + "</span>";
-}
+let html_wrap = (str, cl) => `<span class="${cl}">${str}</span>`;
 
 //Цветовое выделение текста
-function css_end(ending)  { return html_wrap(ending, "ending");  }
+let css_end = ending => html_wrap(ending, "ending");
 
 //Символ gender gap
-function css_gender_gap() { return html_wrap(' \u26A7 ', "queer"); }
+let css_gender_gap = html_wrap(' \u26A7 ', "queer");
+
+//------------------------------------------------------------------------------
 
 //Конструирование феминитива с gender_gap
 function construct_feminitive(stem, ending, gap) {
-	return gap ? stem + css_gender_gap() + css_end(ending) : stem + "_" + ending;
+	return gap ? stem + css_gender_gap + css_end(ending) : stem + "_" + ending;
 }
 
 //Сохранение изображения с феминитивом
 function download_image() {
 	html2canvas(HTML.image(), {
-		onrendered: function (canvas) {
-			var a = document.createElement('a');
+		onrendered: canvas => {
+			let a = document.createElement('a');
 			a.href = canvas.toDataURL();
 			a.download = HTML.content().innerHTML + '.png';
 			a.click();
 		}
 	});
-};
+}
 
 //Создание феминитива
 function make_feminitives(word) {
+	//Обрабатываем только слова длиннее трёх символов
+	if (word.length < 3) return word;
+
 	var stem           = "";             //Основа слова
 	var current_ending = word.slice(-2); //Текущее окончание
-	var feminitives    = new Array();    //Массив феминитивов
-	var femicards      = new Array();    //Массив феминитивов для карточки
+	var feminitives    = [];             //Массив феминитивов
+	var femicards      = [];             //Массив феминитивов для карточки
 
-	for (var fem_ending in FEM.endings) {
-		FEM.endings[fem_ending].forEach(function(end) {
+	for (let fem_ending in FEM.endings) {
+		FEM.endings[fem_ending].forEach(end => {
 			if (ending(end).test(current_ending)) {
 				//Удаление лишних букв из основы
-				stem = offset(end) == 0 ? word : word.slice(0, -offset(end));
+				stem = offset(end) === 0 ? word : word.slice(0, -offset(end));
 
 				//Добавление фем-варианта слова в массив
 				feminitives.push(construct_feminitive(stem, fem_ending, 1));
 				femicards.push(construct_feminitive(stem, fem_ending, 0));
 			}
 		});
-	};
+	}
 	//При отсутствии феминитивов считать корректным исходное слово
 	return [random_word(femicards) || word, feminitives];
+}
+
+//Поиск и феминизация дефиниции в викистранице
+function parseWikiPage(page) {
+	var wiki = page.split("\\n");
+	var definition = "";
+
+	wiki.some((line, n) => {
+		if (line.match(/^.*==== Значение ====.*$/)) {
+			console.log(wiki[n+1]); //DEBUG
+			definition = wiki[n+1]
+			.replace(/^# ?/, "")                          //# дефиниция
+			.replace(/\[{2}([^\]\|]*)\]{2}/g, "$1")       //[[1]]
+			.replace(/\[{2}[^\|]*\|([^\]]*)\]{2}/g, "$1") //[[1|2]]
+			.replace(/\[{2}([^\]\|]*)\}{2}/g, "$1")       //{{1}}
+			.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")         //{{1|2}}
+			.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")         //~ : возможна вложенность
+			.replace(/\[[0-9]{1,}\]/g, "")                //ссылки [n]
+			.replace(/^ *, */g, "")                       //^, ...
+			.replace(/ ?$/,".");                          //Точка в конце предложения
+			return true;
+		}
+	});
+
+	//Разделение дефиниции на массив слов и знаков препинания и феминизация слов
+	var tokens =  definition.match(/[\wа-яА-Яё]+|\d+| +|[^ \w\d\t]+/ig) || [];
+
+	//Замена местоимений, предлогов и проч.
+	HTML.full().innerHTML = FEM.words.convert(tokens.map(w => make_feminitives(w)[0]).join(""));
+
+	//DEBUG
+	console.log(definition);
+	console.log(tokens);
 }
 
 //Запрос значения слова в викисловаре
 function get_wiktionary(term) {
 	var cors_url = "https://cors.now.sh/";
-	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?title=" + term + "&action=raw";
+	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?action=raw&title=" + term;
 
-	var definition = "";
-
-	var parseWikiPage = function(page) {
-		var wiki = page.split("\\n");
-
-		for(var line = 0; line < wiki.length; line++){
-			if (wiki[line].match(/^.*==== Значение ====.*$/)) {
-				console.log(wiki[line+1]); //DEBUG
-				definition = wiki[line+1]
-				.replace(/^# ?/, "")                         //# дефиниция
-				.replace(/\[{2}([^\]\|]*)\]{2}/g, "$1")      //[[1]]
-				.replace(/\[{2}[^\|]*\|([^\]]*)\]{2}/g, "$1") //[[1|2]]
-				.replace(/\[{2}([^\]\|]*)\}{2}/g, "$1")      //{{1}}
-				.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")        //{{1|2}}
-				.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")        //~ : возможна вложенность
-				.replace(/\[[0-9]{1,}\]/g, "")               //ссылки [n]
-				.replace(/^ *, */g, "")                      //^, ...
-				.replace(/ ?$/,".")                          //Точка в конце предложения
-				break;
-			}
-		}
-
-		//Разделение дефиниции на массив слов и знаков препинания
-		var current_word = "";
-		var tokens = new Array();
-		for (var l = 0; l <= definition.length; l++) {
-			if (/[^\wа-яА-Я]/.test(definition[l])) {
-				tokens.push(current_word);
-				tokens.push(definition[l]);
-				current_word = "";
-				continue;
-			} else {
-				current_word += definition[l];
-			}
-		}
-
-		//Феминизация слов
-		var true_definition = new Array();
-		tokens.forEach(function(word) {
-			true_definition.push((word.length > 3) ? make_feminitives(word)[0] : word);
-		});
-
-		//Замена местоимений, предлогов и проч.
-		var article = FEM.words.convert(true_definition.join(""));
-
-		//DEBUG
-		console.log(tokens.join(""));
-		console.log(true_definition);
-		console.log(article);
-
-		HTML.full().innerHTML = article;
-	}
-
-	xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+	var xmlhttp = window.XMLHttpRequest
+		? new XMLHttpRequest()
+		: new ActiveXObject("Microsoft.XMLHTTP");
 
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 			parseWikiPage(xmlhttp.responseText);
 		}
-	}
+	};
 
 	xmlhttp.open("GET", wiki_url, true);
 	xmlhttp.send();
@@ -336,32 +345,11 @@ function tr(word) {
 
 //Инициализация с разбором адресной строки
 function init(container) {
-	//Задание базового id для всех элементов
-	HTML.container = container;
-
-	//Конвертирование по нажатию <Enter>
-	HTML.input().addEventListener("keyup", function(event) {
-		event.preventDefault();
-		if (event.keyCode == 13) {
-			tr();
-		}
-	});
-
-	//Разбор адреса
-	querySt = function(option) {
-		gy = window.location.search.substring(1).split("&");
-
-		for (i=0; i < gy.length; i++) {
-			ft = gy[i].split("=");
-			if (ft[0] == option) {
-				return ft[1];
-			}
-		}
-	}
-
-	var query = decodeURIComponent(querySt("word"));
-	if (query !== 'undefined') {
-		HTML.input().value = query.replace(/\+/g," ");
+	HTML.init(container);
+	URL.parse();
+		
+	if (URL.opt.word) {
+		HTML.input().value = URL.opt.word.replace(/\+/g," ");
 		tr();
 	} else {
 		show_help();
