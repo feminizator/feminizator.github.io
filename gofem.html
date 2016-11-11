@@ -10,13 +10,13 @@
     <link href="css/feminitives.css"   rel="stylesheet">
   </head>
 
-  <body onload="init('definition')">
+  <body>
     <div style="text-align: center;">
       <div id="definition">
         <h1>Феминизатор v1.0</h1>
 
-        <input id="definition-word" type="text" class="form-control" placeholder="Слово" autofocus>
-        <button id="convert" type="button" class="btn" onclick="tr()">Феминитивь!</button>
+        <input  id="definition-word" type="text" placeholder="Слово" autofocus>
+        <button id="definition-convert" type="button">Феминитивь!</button>
 
         <div id="definition-dict"></div>
         <div id="definition-full"></div>
@@ -34,6 +34,9 @@
 
     <script src="js/feminitives.js"></script>
     <script src="js/html2canvas.js"></script>
+    <script>
+      init('definition');
+    </script>
   </body>
 </html>
 

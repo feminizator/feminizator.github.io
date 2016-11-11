@@ -44,6 +44,7 @@ var HTML = {
 	container: "",
 	_select:    function(element) { return document.getElementById(this.container + "-" + element); },
 	input:      function() { return this._select("word"); },
+	button:     function() { return this._select("convert"); },
 	dict:       function() { return this._select("dict"); },
 	content:    function() { return this._select("content"); },
 	full:       function() { return this._select("full"); },
@@ -60,6 +61,9 @@ HTML.init = function(root) {
 		event.preventDefault();
 		event.keyCode == 13 && tr();
 	});
+
+	//Конвертирование по нажатию кнопки
+	this.button().onclick = tr();
 };
 
 //Разбор параметров
@@ -327,6 +331,7 @@ function tr(word) {
 	//Вывод информации
 	if (!wd) {
 		show_help();
+		return;
 	} else if (FEM.exceptions.contains(wd)) {
 		HTML.full().innerHTML = FEM.exceptions.definition(wd);
 		feminitives = FEM.exceptions.feminitives(wd);
