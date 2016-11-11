@@ -57,13 +57,13 @@ HTML.init = function(root) {
 	this.container = root;
 
 	//Конвертирование по нажатию <Enter>
-	this.input().addEventListener("keyup", event => {
+	this.input().addEventListener('keyup', event => {
 		event.preventDefault();
 		event.keyCode == 13 && tr();
 	});
 
 	//Конвертирование по нажатию кнопки
-	this.button().onclick = tr();
+	this.button().onclick = () => tr();
 };
 
 //Разбор параметров
