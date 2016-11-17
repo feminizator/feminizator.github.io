@@ -17,25 +17,11 @@
 // [ ] TODO: валидация
 // [ ] TODO: адаптивная вёрстка
 // [ ] TODO: favico
+// [ ] TODO: help.toggle
 
 //------------------------------------------------------------------------------
 
 'use strict';
-
-//Вывод справки с примерами использования
-function show_help() {
-	HTML.content().innerHTML = "<div id='definition-help'>"
-	+ "<p>ФЕМИНИТИВЫ – это слова женского рода, "
-	+ "альтернативные или парные аналогичным понятиям мужского рода, "
-	+ "относящимся ко всем людям независимо от их пола.</p>"
-	+ "<p>При помощи <a href='TODO'>этой небольшой программы</a>,"
-	+ "реализующей феминистическую логику, "
-	+ "вы сами можете создать феминитивы к любому слову.</p>"
-	+ "<p>Попробуйте: "
-	+ "<a href=javascript:tr('автор');>автор</a>, "
-	+ "<a href=javascript:tr('врач');>врач</a>.</p>"
-	+ "</div>";
-}
 
 //------------------------------------------------------------------------------
 
@@ -48,8 +34,24 @@ var HTML = {
 	dict:       function() { return this._select("dict"); },
 	content:    function() { return this._select("content"); },
 	full:       function() { return this._select("full"); },
-	image:      function() { return this._select("image"); }
+	help:       function() { return this._select("help"); },
+	image:      function() { return this._select("image"); },
 };
+
+//Вывод справки с примерами использования
+function show_help() {
+	HTML.vis(HTML.help());
+	HTML.vis(HTML.content());
+}
+
+HTML.vis = function(e, v) {
+	if (v !== undefined) {
+		e.style.visibility = v;
+		console.log(v);
+	} else {
+		e.style.visibility = e.style.visibility === "visible" ? "hidden" : "visible";
+	}
+}
 
 //Инициализация документа
 HTML.init = function(root) {
@@ -327,6 +329,9 @@ function tr(word) {
 
 	HTML.dict().innerHTML = "";
 	HTML.content().innerHTML = "";
+
+	HTML.vis(HTML.help(),    "hidden");
+	HTML.vis(HTML.content(), "visible");
 
 	//Вывод информации
 	if (!wd) {
