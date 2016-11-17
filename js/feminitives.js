@@ -45,7 +45,6 @@ function show_help() {
 HTML.vis = function(e, v) {
 	if (v !== undefined) {
 		e.style.visibility = v;
-		console.log(v);
 	} else {
 		e.style.visibility = e.style.visibility === "visible" ? "hidden" : "visible";
 	}
