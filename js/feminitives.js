@@ -1,5 +1,5 @@
 
-// Copyright (C) 2016, Maxim Lihachev, <envrm@yandex.ru>
+// Copyright (C) 2016-2017, Maxim Lihachev, <envrm@yandex.ru>
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ FEM.endings = {
 	'есса' : [
 			['[аео]р', 0],
 			['[ои]к', 0],
-			['ог', 0], //биолог -> биологиня
+			['ог', 0], //биолог -> биологесса
 			['ан', 0],
 			['рг', 0],
 			['ач', 0], //врач -> врачесса
@@ -168,6 +168,9 @@ FEM.endings = {
 FEM.exceptions = {
 	'феминист' : [ ['профеминист', 'союзник'],
 			"Мифическое создание, якобы поддерживающее феминизм. В реальности не встречается."
+	],
+	'жена' : [ ['мужерабка', 'подстилка патриархата'],
+			"Женщина, прогнувшаяся под патриархат и получающая удовольствие от угнетения."
 	]
 };
 
