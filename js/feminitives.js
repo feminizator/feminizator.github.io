@@ -338,7 +338,7 @@ function tr(word) {
 
 	//Изменение адреса
 	window.location.hash = wd;
-	URL.opt.href = window.location.href;
+	URL.opt.href = encodeURIComponent(window.location.href);
 
 	HTML.dict().innerHTML = "";
 	HTML.content().innerHTML = "";
@@ -372,8 +372,8 @@ var URL = {opt: {}};
 function init(container) {
 	HTML.init(container);
 
-	URL.opt.href = window.location.href;
-	URL.opt.word = window.location.hash.substring(1) || null;
+	URL.opt.href = decodeURIComponent(window.location.href);
+	URL.opt.word = URL.opt.href.split('#')[1] || null;
 		
 	if (URL.opt.word) {
 		HTML.input().value = URL.opt.word.replace(/\+/g," ");
