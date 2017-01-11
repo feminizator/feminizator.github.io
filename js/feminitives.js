@@ -339,8 +339,6 @@ function tr(word) {
 	var wd = word || HTML.input().value.trim().toLowerCase().split(" ")[0];
 	var feminitives = "";
 
-	//Изменение адреса
-	window.location.hash = wd;
 	URL.opt.href = encodeURIComponent(window.location.href);
 
 	HTML.dict().innerHTML = "";
@@ -365,19 +363,29 @@ function tr(word) {
 	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
 	HTML.dict().innerHTML    = feminitives[1].join(" | ")
 				|| "Это слово и так прекрасно. Оставим его как есть.";
+
+	//Изменение адреса
+	window.history.pushState({}, null, window.location.href.split('?')[0]+'?word='+wd);
 }
 
 //------------------------------------------------------------------------------
 
+//Разбор параметров
 var URL = {opt: {}};
+
+URL.parse = function() {
+	var gy = window.location.search.substring(1).split("&");
+	gy.forEach(arg => {
+		let ft = arg.split("=");
+		this.opt[ft[0]] = this.opt[ft[0]] || decodeURIComponent(ft[1]);
+	});
+};
 
 //Инициализация с разбором адресной строки
 function init(container) {
 	HTML.init(container);
+	URL.parse();
 
-	URL.opt.href = decodeURIComponent(window.location.href);
-	URL.opt.word = URL.opt.href.split('#')[1] || null;
-		
 	if (URL.opt.word) {
 		HTML.input().value = URL.opt.word.replace(/\+/g," ");
 		tr();
