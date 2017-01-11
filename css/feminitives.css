@@ -126,7 +126,7 @@ button:hover {
 
 @media screen and (max-device-width: 1000px) {
 	input  { font-size:90%; }
-	button { font-size: 80%; }
+	button { font-size: 80%; width: 25%; }
 
 	#definition-full { height: 80px; margin-top: 40px; }
 }
@@ -136,6 +136,16 @@ button:hover {
 	#definition h1           { font-size: 150%; }
 	#definition-help         { font-size: 95%; }
 	#definition-card h1      { line-height: 65%; }
+	#definition-card h1 span { font-size: 60%; }
+}
+
+@media screen and (max-device-width: 500px) {
+	#definition              { width: 95%; }
+	#definition h1           { font-size: 150%; }
+	#definition-help         { font-size: 90%; }
+	#definition-card         { width: 330px; }
+	#definition-image        { width: 330px; }
+	#definition-card h1      { line-height: 375%; }
 	#definition-card h1 span { font-size: 60%; }
 }
 
