@@ -339,8 +339,6 @@ function tr(word) {
 	var wd = word || HTML.input().value.trim().toLowerCase().split(" ")[0];
 	var feminitives = "";
 
-	URL.opt.href = encodeURIComponent(window.location.href);
-
 	HTML.dict().innerHTML = "";
 	HTML.content().innerHTML = "";
 
@@ -366,6 +364,7 @@ function tr(word) {
 
 	//Изменение адреса
 	window.history.pushState({}, null, window.location.href.split('?')[0]+'?word='+wd);
+	URL.opt.href = encodeURIComponent(window.location.href);
 }
 
 //------------------------------------------------------------------------------
