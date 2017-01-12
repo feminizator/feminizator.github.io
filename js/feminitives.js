@@ -378,6 +378,8 @@ URL.parse = function() {
 		let ft = arg.split("=");
 		this.opt[ft[0]] = this.opt[ft[0]] || decodeURIComponent(ft[1]);
 	});
+
+	this.opt.href = encodeURIComponent(window.location.href);
 };
 
 //Инициализация с разбором адресной строки
