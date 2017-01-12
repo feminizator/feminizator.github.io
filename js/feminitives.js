@@ -15,7 +15,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 // [ ] TODO: валидация
-// [ ] TODO: адаптивная вёрстка
 
 //------------------------------------------------------------------------------
 
@@ -240,9 +239,9 @@ function construct_feminitive(stem, ending, gap) {
 //Отправка адреса страницы в vk.com
 function share_page() {
 	let vk_url = "http://vk.com/share.php"
-			+ "?url="         + URL.opt.href
-			+ "&title="       + URL.opt.title
-			+ "&description=" + URL.opt.description;
+			+ "?url="         + URL.href
+			+ "&title="       + URL.title
+			+ "&description=" + URL.description.text;
 
 	let new_tab = window.open(vk_url,'_blank');
 	new_tab.focus();
@@ -344,15 +343,21 @@ function tr(word) {
 	var wd = word || HTML.input().value.trim().toLowerCase().split(" ")[0];
 	var feminitives = "";
 
-	HTML.dict().innerHTML = "";
-	HTML.content().innerHTML = "";
+	//Состояние по умолчанию
+	HTML.content().innerHTML = "Введите слово";
+	HTML.dict().innerHTML    = "";
+	HTML.full().innerHTML    = "";
 
 	HTML.vis(HTML.help(),    "hidden");
 	HTML.vis(HTML.content(), "visible");
 
+	//Изменение адреса
+	URL.set(wd);
+
 	//Вывод информации
 	if (!wd) {
 		show_help();
+
 		return;
 	} else if (FEM.exceptions.contains(wd)) {
 		HTML.full().innerHTML = FEM.exceptions.definition(wd);
@@ -366,18 +371,30 @@ function tr(word) {
 	HTML.content().innerHTML = feminitives[0].replace(/(.)/, s => s.toUpperCase());
 	HTML.dict().innerHTML    = feminitives[1].join(" | ")
 				|| "Это слово и так прекрасно. Оставим его как есть.";
-
-	//Изменение адреса
-	window.history.pushState({}, null, window.location.href.split('?')[0]+'?word='+wd);
-	URL.opt.href = encodeURIComponent(window.location.href);
-	URL.opt.description = 'Как феминистки пишут слово "' + wd + '".';
 }
 
 //------------------------------------------------------------------------------
 
-//Разбор параметров
-var URL = {opt: {}};
+//Параметры URL
+var URL = {
+	opt: {},
+	description: {
+		clear: function()   { this.text = "Как феминистки пишут разные слова."; },
+		set:   function(wd) { this.text = 'Как феминистки пишут слово "' +wd+ '".'; },
+	},
+	set: function(wd) {
+		if (!wd) {
+			window.history.pushState({}, null, window.location.href.split('?')[0]);
+			this.description.clear();
+		} else {
+			window.history.pushState({}, null, window.location.href.split('?')[0]+'?word='+wd);
+			this.description.set(wd);
+		}
+		this.href = encodeURIComponent(window.location.href);
+	}
+};
 
+//Разбор параметров URL
 URL.parse = function() {
 	var gy = window.location.search.substring(1).split("&");
 	gy.forEach(arg => {
@@ -385,9 +402,9 @@ URL.parse = function() {
 		this.opt[ft[0]] = this.opt[ft[0]] || decodeURIComponent(ft[1]);
 	});
 
-	this.opt.title = document.title;
+	URL.description.clear();
+	this.title = document.title;
 	this.opt.href  = encodeURIComponent(window.location.href);
-	this.opt.description = 'Как феминистки пишут слово "' + this.opt.word + '".';
 };
 
 //Инициализация с разбором адресной строки
