@@ -420,7 +420,7 @@ function init(container) {
 	URL.parse();
 
 	if (URL.opt.word) {
-		HTML.input().value = URL.opt.word.replace(/\+/g," ");
+		HTML.input().value = URL.opt.word.replace(/<\/?[^>]+(>|$)/g, "").replace(/\+/g," ");
 		tr();
 	} else {
 		show_help();
