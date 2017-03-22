@@ -347,7 +347,7 @@ function get_wiktionary(term) {
 //Создание и вывод феминитива
 function tr(word) {
 	//Исходное слово
-	var wd = word || HTML.input().value.trim().toLowerCase().split(" ")[0];
+	var wd = word || HTML.input().value.trim().toLowerCase().replace(/<\/?[^>]+(>|$)/g, "").split(" ")[0];
 	var feminitives = "";
 
 	//Состояние по умолчанию
@@ -420,7 +420,7 @@ function init(container) {
 	URL.parse();
 
 	if (URL.opt.word) {
-		HTML.input().value = URL.opt.word.replace(/<\/?[^>]+(>|$)/g, "").replace(/\+/g," ");
+		HTML.input().value = URL.opt.word.replace(/\+/g," ");
 		tr();
 	} else {
 		show_help();
