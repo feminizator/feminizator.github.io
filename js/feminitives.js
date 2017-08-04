@@ -323,7 +323,7 @@ function make_feminitives(word) {
 
 //Поиск и феминизация дефиниции в викистранице
 function parseWikiPage(page) {
-	var wiki = page.split("\\n");
+	var wiki = page.split('\n');
 	var definition = "";
 
 	wiki.some((line, n) => {
