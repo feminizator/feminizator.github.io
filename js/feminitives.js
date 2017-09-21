@@ -41,6 +41,16 @@ function show_help() {
 	HTML.vis(HTML.content());
 }
 
+//Смена названия по клику
+function swap_title(id) {
+	var e = document.getElementById(id);
+	if(e.style.display == 'inline') {
+		e.style.display = 'none';
+	} else {
+		e.style.display = 'inline';
+	}
+}
+
 HTML.vis = function(e, v) {
 	if (v !== undefined) {
 		e.style.visibility = v;

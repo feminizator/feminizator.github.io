@@ -36,6 +36,14 @@ button:hover {
 	background: #38A0E4;
 }
 
+#title, #suffix {
+	cursor: pointer;
+}
+
+#suffix {
+	display: none;
+}
+
 #definition {
 	padding: 1%;
 	width: 50%;
