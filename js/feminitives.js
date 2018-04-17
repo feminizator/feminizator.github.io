@@ -223,6 +223,9 @@ FEM.endings = {
 	'ны' : [
 			['на', 2] //бассейна -> бассей_ны
 		],
+	'аяся' : [
+			['ся', 4], //занимающийся -> занимающ_аяся
+		],
 };
 
 //Слова со специфичными определениями
@@ -264,7 +267,7 @@ FEM.words = {
 
 FEM.words.convert = function(string) {
 	for (var fem_w in this) {
-		string =  string.replace(new RegExp(fem_w, "ig"), this[fem_w])
+		string =  string.replace(new RegExp('(^|\\s)+' + fem_w, "ig"), '$1' + this[fem_w])
 				.replace(/(.)/, s => s.toUpperCase());
 	}
 	return string;
@@ -323,7 +326,7 @@ function download_image() {
 //Создание феминитива
 function make_feminitives(word) {
 	//Обрабатываем только слова длиннее трёх символов
-	if (word.length < 3) return word;
+	if (word.length < 4) return [word, word];
 
 	var stem           = "";             //Основа слова
 	var current_ending = word.slice(-2); //Текущее окончание
@@ -360,6 +363,7 @@ function parseWikiPage(page) {
 			.replace(/\[{2}[^\|]*\|([^\]]*)\]{2}/g, "$1") //[[1|2]]
 			.replace(/\[{2}([^\]\|]*)\}{2}/g, "$1")       //{{1}}
 			.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")         //{{1|2}}
+			.replace(/\{{2}[^\{\}]*\|.*/g, "")            //{{1|слово<!--комментарий-->.*$
 			.replace(/\{{2}[^\{\}]*\}{2} ?/g, "")         //~ : возможна вложенность
 			.replace(/\[[0-9]{1,}\]/g, "")                //ссылки [n]
 			.replace(/^ *, */g, "")                       //^, ...
