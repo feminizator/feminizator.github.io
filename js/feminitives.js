@@ -389,7 +389,7 @@ function parseWikiPage(page) {
 
 //Запрос значения слова в викисловаре
 function get_wiktionary(term) {
-	var cors_url = "https://cors.now.sh/";
+	var cors_url = "https://coors.now.sh/";
 	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?action=raw&title=" + term;
 
 	var xmlhttp = window.XMLHttpRequest
