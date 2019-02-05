@@ -14,7 +14,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see <http://www.gnu.org/licenses/>.
+    along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 ## Описание
    ФЕМИНИТИВЫ – это слова женского рода, альтернативные или парные
@@ -25,7 +25,7 @@
    логику, вы сами можете создать феминитивы к любому слову.
 
 ## Феминизатор в действии
-   Опробовать феминизатор в деле можно на странице http://feminitives.ru
+   Опробовать феминизатор в деле можно на странице https://feminitives.ru
 
 ## Помощь
    Буду рад любому вкладу в развитие столь важного для третьей волны феминизма
