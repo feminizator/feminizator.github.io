@@ -20,7 +20,15 @@
   <body>
     <div style="text-align: center;">
       <div id="definition">
-        <h1 id="title" onclick="swap_title('suffix')">Феминизатор<span id="suffix">_ка</span> <sup>v1.6</sup></h1>
+        <h1 id="title">
+	  <span onclick="swap_title('suffix')">Феминизатор<span id="suffix">_ка</span></span>
+	  <sup>
+	    <a id="title_version" target="_blank" title="Список изменений"
+	       href="https://github.com/feminizator/feminizator.github.io/blob/master/CHANGELOG.md">
+	       v2.0
+	    </a>
+	  </sup>
+	</h1>
 
         <input  id="definition-word" type="text" placeholder="Слово" autofocus>
         <button id="definition-convert" type="button">Феминитивь!</button>
@@ -36,7 +44,7 @@
                 аналогичным понятиям мужского рода, относящимся ко всем людям независимо от их
                 пола.</p>
 
-		<p>При помощи <a href="http://notabug.org/envrm/feminitives.ru">
+		<p>При помощи <a href="http://github.com/feminizator/feminizator.github.io/">
 		этой небольшой программы</a>,реализующей феминистическую
 		логику, вы сами можете создать феминитивы к любому слову.</p>
 
@@ -53,11 +61,36 @@
 	<br />
 	<br />
 
-        <a class="toolbar" href="https://money.yandex.ru/to/410014402076764" target="_blank" title="Помочь в борьбе">⛀⛁⛃⛂</a>
+	<a href="https://money.yandex.ru/to/410014402076764" target="_blank" title="Помочь в борьбе">
+	  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="96" height="20">
+	    <linearGradient id="b" x2="0" y2="100%">
+	      <stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/>
+	    </linearGradient>
+	    <clipPath id="a">
+	      <rect width="96" height="20" rx="3" fill="#fff"/>
+	    </clipPath>
+	    <g clip-path="url(#a)">
+	      <path fill="#555" d="M0 0h17v20H0z"/><path fill="#ba55d3" d="M17 0h79v20H17z"/><path fill="url(#b)" d="M0 0h96v20H0z"/>
+	    </g>
+	    <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="110">
+	      <text x="95" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="70">₽</text>
+	      <text x="95" y="140" transform="scale(.1)" textLength="70">₽</text>
+	      <text x="555" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="690">Поддержать</text>
+	      <text x="555" y="140" transform="scale(.1)" textLength="690">Поддержать</text>
+	    </g>
+	  </svg>
+	</a>
+
+	<div id="google_play">
+	  <a href='https://play.google.com/store/apps/details?id=com.feminitives' target="_blank">
+	    <img alt='Доступно в Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png'/>
+	  </a>
+	</div>
       </div>
     </div>
 
-    <script src="js/feminitives.js"></script>
+    <script src="js/feminitives-rules.js"></script>
+    <script src="js/feminitives-functions.js"></script>
     <script src="js/html2canvas.js"></script>
     <script>
       init('definition');
