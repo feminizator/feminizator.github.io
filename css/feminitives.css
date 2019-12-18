@@ -43,6 +43,13 @@ button:hover {
 	cursor: pointer;
 }
 
+#title_version {
+	cursor: pointer;
+	text-decoration: none;
+	color: #7c795d;
+	border-bottom: 5px #7c795d dotted;
+}
+
 #suffix {
 	display: none;
 }
@@ -133,6 +140,18 @@ button:hover {
 
 .toolbar:hover {
 	opacity: 1;
+}
+
+#google_play {
+	position: fixed;
+	left: 0px;
+	bottom: 0px;
+	height: 4em;
+	width: 100%;
+}
+
+#google_play > a > img {
+	height: 4em;
 }
 
 @media screen and (max-device-width: 1000px) {
