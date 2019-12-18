@@ -25,7 +25,13 @@
    логику, вы сами можете создать феминитивы к любому слову.
 
 ## Феминизатор в действии
-   Опробовать феминизатор в деле можно на странице https://feminitives.ru
+   Опробовать феминизатор в деле можно на странице [https://feminitives.ru](https://feminitives.ru).
+
+## Android-версия
+   
+  <a href='https://play.google.com/store/apps/details?id=com.feminitives' target="_blank">
+    <img alt='Доступно в Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png' width=200/>
+  </a>
 
 ## Помощь
    Буду рад любому вкладу в развитие столь важного для третьей волны феминизма
@@ -33,5 +39,5 @@
    феминитивов и просто мысли.
 
 ## Версия
-   1.6
+   2.0. [Список изменений](README.md)
 
