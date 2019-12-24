@@ -1,7 +1,7 @@
 **feminizator** - феминизатор слов
 
 ## Лицензия
-    Copyright (C) 2016-2017, Maxim Lihachev, <envrm@yandex.ru>
+    Copyright (C) 2016-2019, Maxim Lihachev, <envrm@yandex.ru>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
