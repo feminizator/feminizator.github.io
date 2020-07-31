@@ -142,6 +142,17 @@ button:hover {
 	opacity: 1;
 }
 
+.note {
+	margin-top: 10%;
+	text-align: center;
+	font-size: 0.9em;
+	opacity: 0.7;
+}
+
+.note:hover {
+	opacity: 1;
+}
+
 #google_play {
 	position: fixed;
 	left: 0px;

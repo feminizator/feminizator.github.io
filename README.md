@@ -1,5 +1,7 @@
 **feminizator** - феминизатор слов
 
+* [Участник Microsoft Arctic Code Vault](https://archiveprogram.github.com/).
+
 ## Лицензия
     Copyright (C) 2016-2019, Maxim Lihachev, <envrm@yandex.ru>
 
@@ -25,14 +27,9 @@
 
 # Феминизатор в действии
 
-Опробовать феминизатор в деле можно на странице https://feminitives.ru
+Опробовать феминизатор в деле можно на странице [https://feminitives.ru](https://feminitives.ru).
 
-# Помощь
-
-## Феминизатор в действии
-   Опробовать феминизатор в деле можно на странице [https://feminitives.ru](https://feminitives.ru).
-
-## Android-версия
+# Android-версия
    
   <a href='https://play.google.com/store/apps/details?id=com.feminitives' target="_blank">
     <img alt='Доступно в Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/ru_badge_web_generic.png' width=200/>
@@ -40,6 +37,5 @@
 
 # Версия
 
-## Версия
-   2.0. [Список изменений](CHANGELOG.md)
+2.0. [Список изменений](CHANGELOG.md)
 
