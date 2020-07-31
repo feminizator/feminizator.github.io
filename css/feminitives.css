@@ -13,7 +13,7 @@ input {
 	border-radius:7px;
 	padding: 0.5%;
 	margin:  0.5%;
-} 
+}
 
 input:focus {
 	outline: none;
@@ -70,8 +70,9 @@ button:hover {
 }
 
 #definition-help {
+	font-size: 1em;
 	text-align: justify;
-	margin-top: -32% !important;
+	margin-top: -34% !important;
 }
 
 #definition-dict {
@@ -188,5 +189,36 @@ button:hover {
 	#definition-image        { width: 330px; }
 	#definition-card h1      { line-height: 375%; }
 	#definition-card h1 span { font-size: 60%; }
+}
+
+/* Chrome 29+ */
+@media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
+	#definition-help {
+		font-size: 1.2em;
+		padding-top: 5%;
+	}
+}
+
+/* Chrome 22-28 */
+@media screen and(-webkit-min-device-pixel-ratio:0) {
+	#definition-help { -chrome-:only (;
+		font-size:1.2em;
+		padding-top: 5%;
+	);}
+}
+
+/* Chrome, Safari, and also the Edge Browser and Firefox */
+@media and (-webkit-min-device-pixel-ratio:0) {
+	#definition-help {
+		font-size: 1.2em;
+		padding-top: 5%;
+	}
+}
+
+@supports (-moz-appearance:none) {
+	#definition-help {
+		font-size: 1em;
+		padding-top: 0;
+	}
 }
 
