@@ -166,31 +166,6 @@ button:hover {
 	height: 4em;
 }
 
-@media screen and (max-device-width: 1000px) {
-	input  { font-size:90%; }
-	button { font-size: 80%; width: 25%; }
-
-	#definition-full { height: 80px; margin-top: 40px; }
-}
-
-@media screen and (max-device-width: 800px) {
-	#definition              { width: 90%; }
-	#definition h1           { font-size: 150%; }
-	#definition-help         { font-size: 95%; }
-	#definition-card h1      { line-height: 65%; }
-	#definition-card h1 span { font-size: 60%; }
-}
-
-@media screen and (max-device-width: 500px) {
-	#definition              { width: 95%; }
-	#definition h1           { font-size: 150%; }
-	#definition-help         { font-size: 90%; }
-	#definition-card         { width: 330px; }
-	#definition-image        { width: 330px; }
-	#definition-card h1      { line-height: 375%; }
-	#definition-card h1 span { font-size: 60%; }
-}
-
 /* Chrome 29+ */
 @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
 	#definition-help {
@@ -202,7 +177,7 @@ button:hover {
 /* Chrome 22-28 */
 @media screen and(-webkit-min-device-pixel-ratio:0) {
 	#definition-help { -chrome-:only (;
-		font-size:1.2em;
+		font-size: 1.2em;
 		padding-top: 5%;
 	);}
 }
@@ -220,5 +195,30 @@ button:hover {
 		font-size: 1em;
 		padding-top: 0;
 	}
+}
+
+@media screen and (max-device-width: 1000px) {
+	input  { font-size: 90%; }
+	button { font-size: 80%; width: 25%; }
+
+	#definition-full { height: 80px; margin-top: 40px; }
+}
+
+@media screen and (max-device-width: 800px) {
+	#definition              { width: 90%; }
+	#definition h1           { font-size: 150%; }
+	#definition-help         { font-size: 120%; }
+	#definition-card h1      { line-height: 65%; }
+	#definition-card h1 span { font-size: 60%; }
+}
+
+@media screen and (max-device-width: 500px) {
+	#definition              { width: 95%; }
+	#definition h1           { font-size: 150%; }
+	#definition-help         { font-size: 0.9em; padding-top: 0 }
+	#definition-card         { width: 330px; }
+	#definition-image        { width: 330px; }
+	#definition-card h1      { line-height: 375%; }
+	#definition-card h1 span { font-size: 60%; }
 }
 
