@@ -169,7 +169,7 @@ button:hover {
 /* Chrome 29+ */
 @media screen and (-webkit-min-device-pixel-ratio:0) and (min-resolution:.001dpcm) {
 	#definition-help {
-		font-size: 1.2em;
+		font-size: 1em;
 		padding-top: 5%;
 	}
 }
