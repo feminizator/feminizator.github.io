@@ -226,6 +226,8 @@ function parseWikiPage(page) {
 	var wiki = page.split('\n');
 	var definition = "";
 
+	console.log(wiki)
+
 	wiki.some((line, n) => {
 		if (line.match(/^.*==== Значение ====.*$/)) {
 			let definition_line = n + 1;
@@ -315,8 +317,8 @@ function parseWikiPage(page) {
 
 //Запрос значения слова в викисловаре
 function get_wiktionary(term) {
-	var cors_url = "https://coors.now.sh/";
-	var wiki_url = cors_url + "https://ru.wiktionary.org/w/index.php?action=raw&title=" + term;
+	var cors_url = "https://api.allorigins.win/get?url=";
+	var wiki_url = cors_url + encodeURIComponent("https://ru.wiktionary.org/w/index.php?action=raw&title=" + term);
 
 	var xmlhttp = window.XMLHttpRequest
 		? new XMLHttpRequest()
@@ -324,7 +326,8 @@ function get_wiktionary(term) {
 
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-			parseWikiPage(xmlhttp.responseText);
+			console.log(JSON.parse(xmlhttp.response));
+			parseWikiPage(JSON.parse(xmlhttp.responseText).contents);
 		}
 	};
 
