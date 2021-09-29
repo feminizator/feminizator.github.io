@@ -2,7 +2,7 @@
 
 ## 2020
 
-- Феминизатор стал участником [Microsoft Arctic Code Vault](https://archiveprogram.github.com/).
+- Феминизатор стал участником [Arctic Code Vault](https://archiveprogram.github.com/).
 
 -----
 
