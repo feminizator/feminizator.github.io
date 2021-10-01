@@ -1,6 +1,6 @@
 **feminizator** - феминизатор слов
 
-* [Участник Microsoft Arctic Code Vault](https://archiveprogram.github.com/).
+* [Участник Arctic Code Vault](https://archiveprogram.github.com/).
 
 ## Лицензия
     Copyright (C) 2016-2019, Maxim Lihachev, <envrm@yandex.ru>
